@@ -16,6 +16,7 @@ final class PalettePanel: NSPanel, AnimatedPanel {
     var onCommandShortcut: ((NSEvent) -> Bool)?
     /// The palette's typing context, handed over each time a field takes focus.
     var onFieldEditorFocused: ((NSTextInputContext) -> Void)?
+    var onPendingTextInput: ((NSEvent) -> String?)?
     /// Inline argument fields use arrows at their text boundaries to continue their focus ring.
     var onHeaderFieldBoundaryArrow: ((HeaderFieldBoundary) -> Bool)?
     var onDismissMenu: (() -> Void)?
@@ -229,6 +230,15 @@ final class PalettePanel: NSPanel, AnimatedPanel {
             event.modifierFlags.contains(.command),
             onCommandShortcut?(event) == true
         {
+            return
+        }
+        if event.type == .keyDown, let editor = fieldEditor, editor.isEditable,
+            !editor.hasMarkedText(), let characters = onPendingTextInput?(event)
+        {
+            if !characters.isEmpty {
+                editor.insertText(
+                    characters, replacementRange: NSRange(location: NSNotFound, length: 0))
+            }
             return
         }
         super.sendEvent(event)

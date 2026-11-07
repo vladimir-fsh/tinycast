@@ -378,6 +378,9 @@ final class PaletteWindowController: NSObject, NSWindowDelegate {
         panel.onFieldEditorFocused = { [weak self] context in
             self?.core.inputSourceSwitcher.applySession(to: context)
         }
+        panel.onPendingTextInput = { [weak self] event in
+            self?.core.inputSourceSwitcher.pendingCharacters(for: event)
+        }
         // Backspace takes Escape's back step but never closes: a root screen falls to the launcher.
         panel.onBareBackspace = { [weak self] in
             guard let core = self?.core, core.palette.query.isEmpty else { return false }

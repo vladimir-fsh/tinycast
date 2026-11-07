@@ -28,20 +28,6 @@ The command palette is a borderless floating `NSPanel` hosting SwiftUI; see
   source it applied, so a switch made since, by the user or another app, stands. Never applied globally:
   the panel does not activate, so a global switch would land on whichever app is still frontmost.
 
-When the configured source is ABC, the session can translate the first printable key events using
-ABC's keyboard-layout data and insert them through the field editor. It defers the source request
-until focus setup returns, then applies it through that editor's `NSTextInputContext` on the main
-actor. AppKit and TIS calls never move to a background thread. The selected source and its change
-notification confirm the handoff: newer events use normal text input, while events timestamped before confirmation
-still use ABC. A pending dead key completes before handoff. Command/Control chords, navigation,
-existing marked text and the menu input freeze retain their usual handling. Hiding cancels an
-unstarted request; its session identity and the visible key editor guard against stale work.
-
-`input-source-test` drives the shipped panel with an isolated input context and a simulated 200 ms
-native input wait. It covers immediate ABC insertion, queued keys, native handoff, dead keys,
-cancellation and restoration without selecting a system source. This verifies the transition's
-behaviour, not a measured reduction in Tinycast's real opening latency.
-
 ## Summoning
 
 ```

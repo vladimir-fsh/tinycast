@@ -286,15 +286,6 @@ run palette-menu-click-test Tinycast/Platform/Appearance.swift \
                            Tinycast/DesignSystem/Interaction/Motion.swift \
                            Tinycast/DesignSystem/Interaction/AnimatedPanel.swift \
                            Tinycast/Palette/PalettePanel.swift
-run input-source-test      Tinycast/Platform/Appearance.swift \
-                           Tinycast/DesignSystem/Theme.swift \
-                           Tinycast/Platform/WindowLevel.swift \
-                           Tinycast/Platform/NotificationToken.swift \
-                           Tinycast/Platform/InputSourceSwitcher.swift \
-                           Tinycast/DesignSystem/Interaction/KeyboardFocus.swift \
-                           Tinycast/DesignSystem/Interaction/Motion.swift \
-                           Tinycast/DesignSystem/Interaction/AnimatedPanel.swift \
-                           Tinycast/Palette/PalettePanel.swift
 run form-input-test        Tinycast/Platform/Appearance.swift \
                            Tinycast/DesignSystem/Theme.swift \
                            Tinycast/DesignSystem/InterfaceMetrics.swift \

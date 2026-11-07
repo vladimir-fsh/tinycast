@@ -84,7 +84,6 @@ final class InputSourceSwitcher {
         pendingContext = inputContext
         guard let session, !session.applied else { return }
         if session.pendingLayout != nil {
-            scheduleSelection(sessionID: session.id)
             return
         }
         inputContext.selectedKeyboardInputSource = session.preferredInputSourceID

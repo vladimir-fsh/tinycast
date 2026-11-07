@@ -1,6 +1,7 @@
 import AppKit
 import Carbon.HIToolbox
 import SwiftUI
+import Synchronization
 
 @MainActor
 final class PaletteState {
@@ -26,10 +27,11 @@ enum ASCIIKeyboardLayout {
 
 @MainActor
 private final class PendingContext: NSTextInputContext {
-    var selections: [String] = []
+    nonisolated private let selectionHistory = Mutex<[String]>([])
+    var selections: [String] { selectionHistory.withLock { $0 } }
     override var selectedKeyboardInputSource: String? {
-        get { selections.last }
-        set { if let newValue { selections.append(newValue) } }
+        get { selectionHistory.withLock { $0.last } }
+        set { if let newValue { selectionHistory.withLock { $0.append(newValue) } } }
     }
     override func activate() {}
     override func deactivate() {}
@@ -90,7 +92,7 @@ struct InputSourceTests {
             panel.setFrameOrigin(NSPoint(x: -10000, y: -10000))
             panel.orderFront(nil)
             panel.becomeKey()
-            panel.makeFirstResponder(editor)
+            _ = panel.makeFirstResponder(editor)
             panel.onPendingTextInput = { [unowned self] in switcher.pendingCharacters(for: $0) }
         }
 
